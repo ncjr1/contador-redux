@@ -1,25 +1,32 @@
-import logo from './logo.svg';
 import './App.css';
+import React from 'react';
+import { connect } from 'react-redux';
+import {incrementarContador, decrementarContador} from './actions/contador.js';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { solid } from '@fortawesome/fontawesome-svg-core/import.macro' // <-- import styles to be used
 
-function App() {
+function App({contador, incrementar, decrementar}) {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div id="container">
+      <div className="App">
+        Contador: {contador}
+      </div>
+      <div id="buttonContainer">
+        <button id="btnIncrementar" onClick={incrementar}><FontAwesomeIcon icon={solid('plus')}/> Incrementar</button>
+        <button id="btnDecrementar" onClick={decrementar}><FontAwesomeIcon icon={solid('minus')}/> Decrementar</button>
+      </div>
     </div>
   );
 }
 
-export default App;
+const mapStateToProps = state => ({
+  contador: state.contadorReducer.contador,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  incrementar: () => dispatch(incrementarContador()),
+  decrementar: () => dispatch(decrementarContador()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
+//connect(estadoQueDesejaUsar, dispatchersQueDesejaUsar)(ComponenteQueDesejaConectar).
